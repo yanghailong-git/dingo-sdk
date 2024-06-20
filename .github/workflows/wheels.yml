@@ -13,40 +13,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
 
-      - name: Build the third party
+      - name: Download the submodule
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
+      - name: Build third party
         run: |
           cd third-party
           cmake -S . -B build
           cmake --build build -j 8
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/lib" >> $GITHUB_ENV
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.1
         env:
           CIBW_BUILD_FRONTEND: build
           CMAKE_BUILD_PARALLEL_LEVEL: 16
-          CIBW_ENVIRONMENT: LD_LIBRARY_PATH
 
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
-
-  build_sdist:
-    name: Build source distribution
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-
-      - name: Build sdist
-        run: pipx run build --sdist
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-sdist
-          path: dist/*.tar.gz
