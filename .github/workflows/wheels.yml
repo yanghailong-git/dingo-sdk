@@ -18,16 +18,18 @@ jobs:
         run: |
           git submodule sync --recursive
           git submodule update --init --recursive
-      - name: Build third party
-        run: |
-          cd third-party
-          cmake -S . -B build
-          cmake --build build -j 8
+      # - name: Build third party
+      #   run: |
+      #     cd third-party
+      #     cmake -S . -B build
+      #     cmake --build build -j 16
+      #     cd ..
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.1
         env:
           CIBW_BUILD_FRONTEND: build
           CMAKE_BUILD_PARALLEL_LEVEL: 16
+          THIRD_PARTY_INSTALL_PATH: ${{ github.workspace }}/third-party/installed
 
       - uses: actions/upload-artifact@v4
         with:
