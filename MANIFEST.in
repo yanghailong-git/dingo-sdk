@@ -3,3 +3,4 @@ graft src
 graft python
 graft serial 
 graft store-proto
+graft third-party/installed
