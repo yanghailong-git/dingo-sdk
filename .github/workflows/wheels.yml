@@ -14,16 +14,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # - name: Download the submodule
-      #   run: |
-      #     git submodule sync --recursive
-      #     git submodule update --init --recursive
-      # - name: Build third party
-      #   run: |
-      #     cd third-party
-      #     cmake -S . -B build
-      #     cmake --build build -j 16
-      #     cd ..
+      - name: Download the submodule
+        run: |
+          git submodule sync --recursive
+          git submodule update --init --recursive
+      - name: Build third party
+        run: |
+          cd third-party
+          cmake -S . -B build
+          cmake --build build -j 16
+          cd ..
       - name: Set environment variables
         run: |
           echo "THIRD_PARTY_INSTALL_PATH=${{ github.workspace }}/third-party/install" >> $GITHUB_ENV
@@ -35,7 +35,6 @@ jobs:
           CMAKE_BUILD_PARALLEL_LEVEL: ${{ env.CMAKE_BUILD_PARALLEL_LEVEL }}
           THIRD_PARTY_INSTALL_PATH: ${{ env.THIRD_PARTY_INSTALL_PATH }}
           CIBW_ENVIRONMENT:
-            CMAKE_BUILD_PARALLEL_LEVEL=${{ env.CMAKE_BUILD_PARALLEL_LEVEL }}
             THIRD_PARTY_INSTALL_PATH=${{ env.THIRD_PARTY_INSTALL_PATH }}
 
       - uses: actions/upload-artifact@v4
