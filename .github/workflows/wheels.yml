@@ -24,19 +24,10 @@ jobs:
           cmake -S . -B build
           cmake --build build -j 16
           cd ..
-      - name: Set environment variables
-        run: |
-          echo "THIRD_PARTY_INSTALL_PATH=${{ github.workspace }}/third-party/installed" >> $GITHUB_ENV
-          echo "CMAKE_BUILD_PARALLEL_LEVEL=16" >> $GITHUB_ENV
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.1
         env:
           CIBW_BUILD_FRONTEND: build
-          CMAKE_BUILD_PARALLEL_LEVEL: ${{ env.CMAKE_BUILD_PARALLEL_LEVEL }}
-          THIRD_PARTY_INSTALL_PATH: ${{ env.THIRD_PARTY_INSTALL_PATH }}
-          CIBW_ENVIRONMENT:
-            CMAKE_BUILD_PARALLEL_LEVEL=${{ env.CMAKE_BUILD_PARALLEL_LEVEL }}
-            THIRD_PARTY_INSTALL_PATH=${{ env.THIRD_PARTY_INSTALL_PATH }}
 
       - uses: actions/upload-artifact@v4
         with:
