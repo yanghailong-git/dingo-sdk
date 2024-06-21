@@ -13,17 +13,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Download the submodule
-        run: |
-          git submodule sync --recursive
-          git submodule update --init --recursive
-      - name: Build third party
-        run: |
-          cd third-party
-          cmake -S . -B build
-          cmake --build build -j 16
-          cd ..
+        with:
+          submodules: true
+          
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.19.1
         env:
