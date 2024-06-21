@@ -47,6 +47,28 @@ before-all = [
 archs = ["x86_64"]
 
 
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = [
+  "apk add --upgrade build-base perl",
+  "cd {project}/third-party",
+  "rm -rf {project}/third-party/build",
+  "rm -rf {project}/third-party/installed",
+  "cmake -S . -B build",
+  "cmake --build build -j 16",
+]
+
+[tool.cibuildwheel.macos]
+before-all = [
+  "cd {project}/third-party",
+  "rm -rf {project}/third-party/build",
+  "rm -rf {project}/third-party/installed",
+  "cmake -S . -B build",
+  "cmake --build build -j 16",
+]
+archs = ["x86_64"]
+
+
 [tool.ruff]
 target-version = "py37"
 
