@@ -32,8 +32,8 @@ testpaths = ["tests"]
 
 [tool.cibuildwheel]
 # Setuptools bug causes collision between pypy and cpython artifacts
-before-build = "rm -rf {project}/build"
-build = "*-manylinux*"
+# before-build = "rm -rf {project}/build"
+build = "cp39-manylinux*"
 skip = "*-musllinux*"
 
 
