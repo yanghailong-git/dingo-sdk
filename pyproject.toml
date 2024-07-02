@@ -36,6 +36,9 @@ testpaths = ["tests"]
 build = "cp39-manylinux*"
 skip = "*-musllinux*"
 
+[[tool.cibuildwheel.overrides]]
+select = "cp39-*"
+manylinux-x86_64-image = "manylinux_2_28"
 
 # Install system library
 [tool.cibuildwheel.linux]
